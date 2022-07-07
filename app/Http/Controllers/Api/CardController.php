@@ -27,4 +27,13 @@ class CardController extends Controller
         );
         $newCard->save();
     }
+
+    public function DeleteAll() {
+        Card::truncate();
+    }
+
+    public function DeleteCardById($id) {
+        $deleteCard = Card::find($id);
+        $deleteCard->delete();
+    }
 }

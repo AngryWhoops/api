@@ -18,6 +18,6 @@ use App\Http\Controllers\Api\CardController;
 Route::get('/getallcards', [CardController::class, 'getallcards']);
 Route::get('/getcardbyid/{id}', [CardController::class, 'getcardbyid']);
 Route::post('/createcard', [CardController::class, 'createcard']);
-Route::post('/deleteall', [CardController::class, 'deleteallcards']);
+Route::post('/deleteall', [CardController::class, 'deleteall']);
 Route::post('/deleteby/{id}', [CardController::class, 'deletecardbyid']);
 
