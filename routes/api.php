@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CardController;
+use App\Http\Controllers\Api\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +15,9 @@ use App\Http\Controllers\Api\CardController;
 |
 */
 
-Route::get('/getallcards', [CardController::class, 'getallcards']);
-Route::get('/getcardbyid/{id}', [CardController::class, 'getcardbyid']);
-Route::post('/createcard', [CardController::class, 'createcard']);
-Route::post('/deleteall', [CardController::class, 'deleteall']);
-Route::post('/deleteby/{id}', [CardController::class, 'deletecardbyid']);
+Route::get('/getallposts', [PostController::class, 'getallposts']);
+Route::get('/getpostbyid/{id}', [PostController::class, 'getpostbyid']);
+Route::post('/createpost', [PostController::class, 'createpost']);
+Route::post('/deleteall', [PostController::class, 'deleteall']);
+Route::post('/deletepostbyid/{id}', [PostController::class, 'deletepostbyid']);
 
