@@ -14,10 +14,14 @@ class User extends Model
 
     protected $fillable = [
         'login',
-        'subscription'
+        'subscriptions'
     ];
 
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function userSubscriptions() {
+        return $this->hasMany(User::class);
     }
 }

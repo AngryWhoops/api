@@ -13,7 +13,7 @@ class Hashtag extends Model
         'hashtag'
     ];
 
-    public function hashTags() {
+    public function posts() {
         return $this->belongsToMany(Post::class);
     }
 }

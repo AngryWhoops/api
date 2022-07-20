@@ -35,4 +35,9 @@ class PostController extends Controller
         $deletePost = Post::find($id);
         $deletePost->delete();
     }
+
+    public function GetPostsByUser(Request $request) {
+        $posts = Post::where('login', '=', request());
+        return response()->json($posts);
+    }
 }

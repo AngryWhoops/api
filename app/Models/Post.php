@@ -13,6 +13,11 @@ class Post extends Model
     public $timestamps = true;
     protected $primaryKey = 'id';
 
+    protected $casts = [
+        'created_at' => 'date:d.m.Y H:i',
+        'updated_at' => 'date:d.m.Y H:i'
+    ];
+
     protected $fillable = [
         'body'
     ];
@@ -25,7 +30,8 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function hashTags() {
+    public function hashtags() {
         return $this->belongsToMany(Hashtag::class);
     }
+
 }

@@ -33,10 +33,14 @@ return new class extends Migration
             $table->string('hashtag');
         });
 
-        Schema::create('hashtags_posts', function (Blueprint $table) {
+        Schema::create('post_hashtag', function (Blueprint $table) {
             $table->id();
-
+            $table->unsignedBigInteger('post_id')->index();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('hashtag_id')->index();
+            $table->foreign('hashtag_id')->references('id')->on('hashtags');
         });
+
     }
 
     /**
