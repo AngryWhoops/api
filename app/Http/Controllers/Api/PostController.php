@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function GetAllPosts() {
-        $cards = Post::all();
-        return response()->json($cards);
+        $posts = Post::all();
+        return response()->json($posts);
     }
 
     public function GetPostById($id) {
@@ -37,7 +38,7 @@ class PostController extends Controller
     }
 
     public function GetPostsByUser(Request $request) {
-        $posts = Post::where('login', '=', request());
+        $posts = User::where('login', '=', $request);
         return response()->json($posts);
     }
 }

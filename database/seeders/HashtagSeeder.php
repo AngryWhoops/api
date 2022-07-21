@@ -2,20 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
+use App\Models\Hashtag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PostsTableSeeder extends Seeder
+class HashtagSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         //
-        Post::factory()->count(20)->create();
+        Hashtag::factory()->count(10)->create();
     }
 }

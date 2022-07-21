@@ -19,5 +19,5 @@ Route::get('/getallposts', [PostController::class, 'getallposts']);
 Route::get('/getpostbyid/{id}', [PostController::class, 'getpostbyid']);
 Route::post('/createpost', [PostController::class, 'createpost']);
 Route::post('/deleteall', [PostController::class, 'deleteall']);
-Route::post('/deletepostbyid/{id}', [PostController::class, 'deletepostbyid']);
+Route::get('/deletepostbyid/{id}', [PostController::class, 'deletepostbyid']);
 Route::get('/getpostsbyuser/{user}', [PostController::class, 'getpostsbyuser']);

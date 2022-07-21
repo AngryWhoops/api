@@ -11,6 +11,8 @@ class User extends Model
 
     public $incrementing = true;
     protected $primaryKey = 'id';
+    public $timestamps = false;
+    public $table = 'users';
 
     protected $fillable = [
         'login',
@@ -21,7 +23,7 @@ class User extends Model
         return $this->hasMany(Post::class);
     }
 
-    public function userSubscriptions() {
+    /* public function userSubscriptions() {
         return $this->hasMany(User::class);
-    }
+    } */
 }

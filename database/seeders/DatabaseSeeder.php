@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Hashtag;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,12 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
 
-        $this->call(HashTagsTableSeeder::class);
-        $this->call(PostsTableSeeder::class);
-        $this->call(UserTableSeeder::class);
+        /* Hashtag::factory()->count(20)->create(); */
 
-        Model::reguard();
+        $this->call(HashtagSeeder::class);
+        $this->call(PostSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
