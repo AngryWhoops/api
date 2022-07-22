@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('login')->unique()->index();
-            $table->string('subscriptions');
+            $table->string('subscriptions')->nullable();
         });
 
         Schema::create('posts', function (Blueprint $table) {

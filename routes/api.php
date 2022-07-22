@@ -16,8 +16,15 @@ use App\Http\Controllers\Api\PostController;
 */
 
 Route::get('/getallposts', [PostController::class, 'getallposts']);
+
 Route::get('/getpostbyid/{id}', [PostController::class, 'getpostbyid']);
-Route::post('/createpost', [PostController::class, 'createpost']);
+
+Route::post('/createmypost', [PostController::class, 'createmypost']);
+
 Route::post('/deleteall', [PostController::class, 'deleteall']);
+
 Route::get('/deletepostbyid/{id}', [PostController::class, 'deletepostbyid']);
-Route::get('/getpostsbyuser/{user}', [PostController::class, 'getpostsbyuser']);
+
+Route::get('/getpostsbyuser/{login}', [PostController::class, 'getpostsbyuser']);
+
+Route::post('/createpostwithauthor', [PostController::class, 'createpostwithauthor']);

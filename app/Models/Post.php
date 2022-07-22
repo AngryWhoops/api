@@ -21,13 +21,12 @@ class Post extends Model
 
     protected $fillable = [
         'body',
-        'author_id',
-        'hashtag_id'
+        'user_author',
     ];
 
-    public function author() {
+    /* public function author() {
         return $this->hasOne(User::class);
-    }
+    } */
 
     public function user() {
         return $this->belongsTo(User::class);

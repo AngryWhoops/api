@@ -15,7 +15,6 @@ class UserFactory extends Factory
             //
             'login' => fake()->unique()->firstName(),
             'subscriptions' => fake()->firstName(),
-            /* 'posts_id' => fake()->randomDigit() */
         ];
     }
 }
