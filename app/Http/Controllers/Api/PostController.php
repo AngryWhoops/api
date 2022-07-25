@@ -3,24 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function GetAllPosts() {
+    public function GetAllPosts()
+    {
         $posts = Post::all();
         return response()->json($posts);
     }
 
-    public function GetPostById($id) {
-        $post = Post::find($id);
-        return response()->json($post);
-    }
 
-    public function CreateMyPost(Request $request) {
+    public function CreateMyPost(Request $request)
+    {
         $newPost = new Post(
             array(
                 'body' => $request->get('body')
@@ -29,27 +27,20 @@ class PostController extends Controller
         $newPost->save();
     }
 
-    public function DeleteAll() {
-        Post::truncate();
+
+    public function GetPostsByUser($login)
+    {
+        /* $user = User::where('login', $login)->first();
+        $allposts = $user->posts()->get();
+         */
+        $ps = User::where('login', $login)->posts()->get()->with('user_id')->get();
+        return response()->json($ps);
     }
 
-    public function DeletePostById($id) {
-        $deletePost = Post::find($id);
-        $deletePost->delete();
-    }
-
-    public function GetPostsByUser($login) {
-        $posts = Post::where('user_author', $login)->get();
+    public function GetPostsByHashtag($hashtag)
+    {
+        $newHashTag = Hashtag::where('name', $hashtag);
+        $posts = $newHashTag->posts()->get();
         return response()->json($posts);
-    }
-
-    public function CreatePostWithAuthor(Request $request) {
-        $newPost = new Post(
-            array(
-                'body' => $request->get('body'),
-                'user_author' => $request->get('user_author')
-            )
-        );
-        $newPost->save();
     }
 }

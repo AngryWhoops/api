@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -16,24 +18,25 @@ class Post extends Model
 
     protected $casts = [
         'created_at' => 'date:d.m.Y H:i',
-        'updated_at' => 'date:d.m.Y H:i'
+        'updated_at' => 'date:d.m.Y H:i',
     ];
 
     protected $fillable = [
         'body',
-        'user_author',
     ];
 
-    /* public function author() {
-        return $this->hasOne(User::class);
-    } */
-
-    public function user() {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    /* public function hashtags() {
-        return $this->belongsToMany(Hashtag::class);
-    } */
-
+    public function hashtags(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Hashtag::class,
+            'hashtag_post',
+            'post_id',
+            'hashtag_id'
+        );
+    }
 }

@@ -13,9 +13,11 @@ class PostFactory extends Factory
     {
         return [
             //
-            'body' => fake()-> text(),
+            'body' => fake()->text(),
             'created_at' => fake()->date(),
             'updated_at' => fake()->date(),
+            'user_id' => fake()->numberBetween(1, 5),
+            'hashtag_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

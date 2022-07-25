@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Hashtag extends Model
 {
@@ -13,10 +14,16 @@ class Hashtag extends Model
     public $table = 'hashtags';
 
     protected $fillable = [
-        'hashtag'
+        'name'
     ];
 
-    /* public function posts() {
-        return $this->belongsToMany(Post::class);
-    } */
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'hashtag_post',
+            'hashtag_id',
+            'post_id'
+        );
+    }
 }

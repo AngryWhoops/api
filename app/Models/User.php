@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Model
 {
@@ -16,14 +17,10 @@ class User extends Model
 
     protected $fillable = [
         'login',
-        'subscriptions'
     ];
 
-    public function posts() {
+    public function posts(): HasMany
+    {
         return $this->hasMany(Post::class);
     }
-
-    /* public function userSubscriptions() {
-        return $this->hasMany(User::class);
-    } */
 }

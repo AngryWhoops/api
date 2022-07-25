@@ -15,8 +15,7 @@ class HashtagFactory extends Factory
     public function definition()
     {
         return [
-            //
-            'hashtag' => fake()->unique()->word()
+            'name' => fake()->unique()->word()
         ];
     }
 }
