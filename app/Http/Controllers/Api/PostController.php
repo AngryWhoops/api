@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function GetAllPosts()
     {
-        $posts = Post::all();
+        $posts = Post::with('user')->get();
         return response()->json($posts);
     }
 
@@ -37,6 +37,7 @@ class PostController extends Controller
 
     public function GetPostsByHashtag($hashtag)
     {
+        //TODO
         $newHashTag = Hashtag::where('name', $hashtag);
         $posts = $newHashTag->posts()->get();
         return response()->json($posts);
