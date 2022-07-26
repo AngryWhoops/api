@@ -31,15 +31,8 @@ class PostController extends Controller
 
     public function GetPostsByUser($login)
     {
-        /* $user = User::where('login', $login)->first();
-        $allposts = $user->posts()->get();
-         */
-        /* $ps = User::where('login', $login)->posts()->get()->with('user_id')->get();
-        return response()->json($ps); */
-
         $user = User::where('login', $login)->first();
-        $userLogin = $user->login;
-        $allposts = $user->posts()->login->get();
+        $allposts = $user->posts()->get();
         return response()->json($allposts);
     }
 
