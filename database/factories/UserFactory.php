@@ -14,7 +14,6 @@ class UserFactory extends Factory
         return [
             //
             'login' => fake()->unique()->firstName(),
-            'post_id' => fake()->numberBetween(1, 9),
         ];
     }
 }
