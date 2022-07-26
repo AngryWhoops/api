@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\User;
@@ -33,8 +34,13 @@ class PostController extends Controller
         /* $user = User::where('login', $login)->first();
         $allposts = $user->posts()->get();
          */
-        $ps = User::where('login', $login)->posts()->get()->with('user_id')->get();
-        return response()->json($ps);
+        /* $ps = User::where('login', $login)->posts()->get()->with('user_id')->get();
+        return response()->json($ps); */
+
+        $user = User::where('login', $login)->first();
+        $userLogin = $user->login;
+        $allposts = $user->posts()->login->get();
+        return response()->json($allposts);
     }
 
     public function GetPostsByHashtag($hashtag)
