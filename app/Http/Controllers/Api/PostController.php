@@ -17,23 +17,22 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
-
     public function CreateMyPost(Request $request)
     {
         $newPost = new Post(
             array(
-                'body' => $request->get('body')
+                'body' => $request->get('body'),
             )
         );
         $newPost->save();
     }
 
-
+    //Все посты пользователя по логину
     public function GetPostsByUser($login)
     {
         $user = User::where('login', $login)->first();
-        $allposts = $user->posts()->get();
-        return response()->json($allposts);
+        $postsWithAuthor = Post::with('user')->where('user_id', '=', $user->id)->get();
+        return response()->json($postsWithAuthor);
     }
 
     public function GetPostsByHashtag($hashtag)
