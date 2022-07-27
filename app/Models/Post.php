@@ -25,6 +25,11 @@ class Post extends Model
         'body',
     ];
 
+    protected $hidden = [
+        'id',
+        'user_id',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -32,11 +37,6 @@ class Post extends Model
 
     public function hashtags(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Hashtag::class,
-            'hashtag_post',
-            'post_id',
-            'hashtag_id'
-        );
+        return $this->belongsToMany(Hashtag::class);
     }
 }

@@ -17,13 +17,13 @@ class Hashtag extends Model
         'name'
     ];
 
+    protected $hidden = [
+        'id',
+        'pivot',
+    ];
+
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Post::class,
-            'hashtag_post',
-            'hashtag_id',
-            'post_id'
-        );
+        return $this->belongsToMany(Post::class);
     }
 }
