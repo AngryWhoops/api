@@ -18,12 +18,22 @@ class PostController extends Controller
 
     public function CreateMyPost(Request $request)
     {
-        $newPost = new Post(
+        /* $text = $request->get('body'); */
+        $text = [$request->get('body')];
+        $tagsArray = [];
+        foreach ($text as $element) {
+            if ($element[0] == '@') {
+                array_push($tagsArray, $element);
+            }
+        };
+        /* $newPost = new Post(
             array(
                 'body' => $request->get('body'),
+
             )
         );
-        $newPost->save();
+        $newPost->save(); */
+        return response()->json($tagsArray);
     }
 
     //Все посты пользователя по логину

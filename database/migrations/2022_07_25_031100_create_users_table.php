@@ -12,7 +12,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('login')->unique()->default('MyUser');
-            /* $table->foreignIdFor(Post::class, 'post_id')->nullable(); */
         });
     }
 

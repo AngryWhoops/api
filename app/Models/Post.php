@@ -17,8 +17,8 @@ class Post extends Model
     public $table = 'posts';
 
     protected $casts = [
-        'created_at' => 'date:d.m.Y H:i',
-        'updated_at' => 'date:d.m.Y H:i',
+        'created_at' => 'date:d.m.Y ',
+        'updated_at' => 'date:d.m.Y ',
     ];
 
     protected $fillable = [
@@ -28,6 +28,7 @@ class Post extends Model
     protected $hidden = [
         'id',
         'user_id',
+        'pivot',
     ];
 
     public function user(): BelongsTo
