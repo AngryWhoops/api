@@ -18,10 +18,10 @@ class PostController extends Controller
 
     public function CreateMyPost(Request $request)
     {
-        /* $text = $request->get('body'); */
-        $text = [$request->get('body')];
+        $text = $request->get('body');
+        $arrText = explode(' ', $text);
         $tagsArray = [];
-        foreach ($text as $element) {
+        foreach ($arrText as $element) {
             if ($element[0] == '@') {
                 array_push($tagsArray, $element);
             }
@@ -33,6 +33,7 @@ class PostController extends Controller
             )
         );
         $newPost->save(); */
+
         return response()->json($tagsArray);
     }
 
