@@ -59,6 +59,11 @@ class PostController extends Controller
         return response($postsWithAuthor);
     }
 
+    public function Subscribe()
+    {
+        //TODO
+    }
+
     //Done
     public function GetPostsByHashtag($hashtag)
     {

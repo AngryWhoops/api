@@ -22,3 +22,5 @@ Route::post('/createmypost', [PostController::class, 'createmypost']);
 Route::get('/getpostsbyuser/{login}', [PostController::class, 'getpostsbyuser']);
 
 Route::get('/getpostsbyhashtag/{hashtag}', [PostController::class, 'getpostsbyhashtag']);
+
+Route::get('/subscribe', [PostController::class, 'subscribe']);
