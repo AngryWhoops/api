@@ -53,15 +53,26 @@ class PostController extends Controller
         $postsWithAuthor = Post::with('user', 'markedUsers')->where('user_id', '=', $user->id)->get(); */
 
         $user = User::where('login', $login)->first();
-        $postsWithAuthor = Post::with('user', 'markedUsers')
+        $postsWithAuthor = Post::with('user')
             ->where('user_id', '=', $user->id)
             ->get();
         return response($postsWithAuthor);
     }
 
-    public function Subscribe()
+    public function Subscribe($id)
     {
         //TODO
+
+        /* $subs = new PostUser(
+            array(
+                'post_id' => $id,
+                'user_id' => 1,
+            )
+        );
+        $subs->save(); */
+
+        $post = Post::find($id);
+        $post->save(['user_id' => 1]);
     }
 
     //Done
