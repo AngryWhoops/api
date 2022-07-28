@@ -15,7 +15,6 @@ return new class extends Migration
             $table->timestamps();
             $table->text('body', 280)->nullable();
             $table->foreignIdFor(User::class, 'user_id')->default(1);
-            /* $table->foreignIdFor(Hashtag::class, 'hashtag_id')->nullable(); */
         });
     }
 

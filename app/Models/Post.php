@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Hash;
 
 class Post extends Model
 {
@@ -26,10 +28,9 @@ class Post extends Model
     ];
 
     protected $hidden = [
-        'id',
+        /* 'id',
         'user_id',
-        'pivot',
-    ];
+        'pivot', */];
 
     public function user(): BelongsTo
     {
@@ -39,5 +40,10 @@ class Post extends Model
     public function hashtags(): BelongsToMany
     {
         return $this->belongsToMany(Hashtag::class);
+    }
+
+    public function markedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

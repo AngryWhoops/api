@@ -22,6 +22,7 @@ class User extends Model
 
     protected $hidden = [
         'id',
+        'pivot'
     ];
 
     public function posts(): HasMany
@@ -32,5 +33,10 @@ class User extends Model
     public function subscriptions(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function markedOnPosts(): BelongsToMany
+    {
+        return $this->BelongsToMany(Post::class);
     }
 }
