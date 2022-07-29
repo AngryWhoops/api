@@ -17,7 +17,6 @@ class PostFactory extends Factory
             'created_at' => fake()->date(),
             'updated_at' => fake()->date(),
             'user_id' => fake()->numberBetween(1, 5),
-            'hashtag_id' => fake()->numberBetween(1, 10),
         ];
     }
 }
