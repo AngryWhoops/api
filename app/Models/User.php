@@ -40,8 +40,8 @@ class User extends Model
         return $this->BelongsToMany(Post::class);
     }
 
-    public function subscribeOnPost(): HasMany
+    public function postsWithSubscription(): HasMany
     {
-        return $this->hasMany(Post::class, 'subscribed_user_id', 'id');
+        return $this->hasMany(Post::class);
     }
 }

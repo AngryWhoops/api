@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\PostController;
 |
 */
 
-Route::get('/getallposts', [PostController::class, 'getallposts']);
+Route::get('/getallmyposts', [PostController::class, 'getallmyposts']);
 
 Route::post('/createmypost', [PostController::class, 'createmypost']);
 

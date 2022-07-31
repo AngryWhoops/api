@@ -12,10 +12,16 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function GetAllPosts()
+    public function GetAllMyPosts()
     {
-        $posts = Post::with('user', 'hashtags')->get();
-        return response()->json($posts);
+        //Посты, где автор MyUser
+        $meAsAuthorPosts = User::with('postsWithSubscription')->where('subscribed_user_id', 1);
+        //Посты, на которые подписан MyUser
+        /* $mySubscribedPosts = User::with('postWithSubscription')->with(); */
+        //Посты на которых отмечен MyUser
+        $meAsMarkedUser = User::with('markedOnPosts')->where('user_id', 1)->get();
+
+        return response()->json($meAsAuthorPosts);
     }
 
     public function CreateMyPost(Request $request)
