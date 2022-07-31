@@ -69,23 +69,12 @@ class PostController extends Controller
 
         return response()->json($merged);
     }
-
-    public function Subscribe($id)
+    //Done
+    public function SubscribeOnPost($id)
     {
-        //TODO
-
-        /* $subs = new PostUser(
-            array(
-                'post_id' => $id,
-                'user_id' => 1,
-            )
-        );
-        $subs->save();
-
         $post = Post::find($id);
-        $post->update([
-            'user_id' => $id
-        ]); */
+        $post->subscribed_user_id = 1;
+        $post->save();
     }
 
     //Done

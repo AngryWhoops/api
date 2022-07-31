@@ -15,6 +15,7 @@ return new class extends Migration
             $table->timestamps();
             $table->text('body', 280)->nullable();
             $table->foreignIdFor(User::class, 'user_id')->default(1);
+            $table->foreignIdFor(User::class, 'subscribed_user_id')->nullable();
         });
     }
 

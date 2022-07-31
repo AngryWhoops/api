@@ -32,11 +32,16 @@ class User extends Model
 
     public function subscriptions(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'subscription_user');
     }
 
     public function markedOnPosts(): BelongsToMany
     {
         return $this->BelongsToMany(Post::class);
+    }
+
+    public function subscribeOnPost(): HasMany
+    {
+        return $this->hasMany(Post::class, 'subscribed_user_id', 'id');
     }
 }

@@ -28,7 +28,7 @@ class Post extends Model
     ];
 
     protected $hidden = [
-        'id',
+        /* 'id', */
         'user_id',
         'pivot',
     ];
@@ -46,5 +46,10 @@ class Post extends Model
     public function markedUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'post_user');
+    }
+
+    public function subscribedUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

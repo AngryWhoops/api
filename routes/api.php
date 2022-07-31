@@ -23,4 +23,4 @@ Route::get('/getpostsbyuser/{login}', [PostController::class, 'getpostsbyuser'])
 
 Route::get('/getpostsbyhashtag/{hashtag}', [PostController::class, 'getpostsbyhashtag']);
 
-Route::get('/subscribe/{id}', [PostController::class, 'subscribe']);
+Route::get('/subscribeonpost/{id}', [PostController::class, 'subscribeonpost']);
