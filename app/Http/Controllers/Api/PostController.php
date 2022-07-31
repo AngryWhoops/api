@@ -7,6 +7,7 @@ use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\PostUser;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -46,17 +47,26 @@ class PostController extends Controller
         $newPostUser->save();
     }
 
-    //Все посты пользователя по логину и отметке
+    //Done
     public function GetPostsByUser($login)
     {
-        /* $user = User::where('login', $login)->first();
-        $postsWithAuthor = Post::with('user', 'markedUsers')->where('user_id', '=', $user->id)->get(); */
-
         $user = User::where('login', $login)->first();
+
         $postsWithAuthor = Post::with('user')
             ->where('user_id', '=', $user->id)
             ->get();
-        return response($postsWithAuthor);
+
+        $user = User::where('login', $login)->first();
+
+        $markedOnPosts = User::find($user->id)
+            ->markedOnPosts()
+            ->with('markedUsers', 'user')
+            ->get();
+        $firstCollection = new Collection($postsWithAuthor);
+        $secondCollection = new Collection($markedOnPosts);
+        $merged = $firstCollection->merge($secondCollection);
+
+        return response()->json($merged);
     }
 
     public function Subscribe($id)
@@ -72,7 +82,9 @@ class PostController extends Controller
         $subs->save(); */
 
         $post = Post::find($id);
-        $post->save(['user_id' => 1]);
+        $post->update([
+            'user_id' => $id
+        ]);
     }
 
     //Done

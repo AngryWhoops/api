@@ -10,6 +10,7 @@ return new class extends Migration
 {
     public function up()
     {
+        //Посты с отметками пользователя
         Schema::create('post_user', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Post::class, 'post_id')->index();
