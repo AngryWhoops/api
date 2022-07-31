@@ -51,20 +51,21 @@ class PostController extends Controller
     public function GetPostsByUser($login)
     {
         $user = User::where('login', $login)->first();
-
+        //Посты, где пользователь автор
         $postsWithAuthor = Post::with('user')
             ->where('user_id', '=', $user->id)
             ->get();
 
-        $user = User::where('login', $login)->first();
-
-        $markedOnPosts = User::find($user->id)
+        //Посты, где пользователь отмечен
+        $markedOnPosts = $user
             ->markedOnPosts()
             ->with('markedUsers', 'user')
             ->get();
-        $firstCollection = new Collection($postsWithAuthor);
-        $secondCollection = new Collection($markedOnPosts);
-        $merged = $firstCollection->merge($secondCollection);
+        /* $firstCollection = new Collection($postsWithAuthor);
+        $secondCollection = new Collection($markedOnPosts); */
+
+        //Объединяем
+        $merged = $postsWithAuthor->merge($markedOnPosts);
 
         return response()->json($merged);
     }
@@ -79,12 +80,12 @@ class PostController extends Controller
                 'user_id' => 1,
             )
         );
-        $subs->save(); */
+        $subs->save();
 
         $post = Post::find($id);
         $post->update([
             'user_id' => $id
-        ]);
+        ]); */
     }
 
     //Done
