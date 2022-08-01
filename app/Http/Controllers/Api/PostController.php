@@ -66,7 +66,7 @@ class PostController extends Controller
         );
         $newPost->save();
 
-
+        //Обреж массив с пользователям от собак
         //Записываю отношение поста с юзером (отметка юзера в посте)
         foreach ($marksArray as $user) {
             $someUser = User::where('login', $user)->first();
