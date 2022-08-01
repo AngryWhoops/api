@@ -21,9 +21,8 @@ class User extends Model
     ];
 
     protected $hidden = [
-        'id',
-        'pivot'
-    ];
+        /* 'id',
+        'pivot' */];
 
     public function posts(): HasMany
     {
@@ -32,16 +31,16 @@ class User extends Model
 
     public function subscriptions(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'subscription_user');
+        return $this->belongsToMany(User::class, 'user_subuser', 'user_id', 'subuser_id');
     }
 
     public function markedOnPosts(): BelongsToMany
     {
-        return $this->BelongsToMany(Post::class);
+        return $this->BelongsToMany(Post::class, 'post_user');
     }
 
-    public function postsWithSubscription(): HasMany
+    /* public function subscribeOnUser(): HasMany
     {
-        return $this->hasMany(Post::class);
-    }
+        return $this->hasMany(Post::class, 'subscribed_user_id', 'id');
+    } */
 }

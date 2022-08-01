@@ -5,22 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubscriptionUser extends Model
+class UserSubuser extends Model
 {
     use HasFactory;
 
     public $incrementing = true;
     protected $primaryKey = 'id';
     public $timestamps = false;
-    public $table = 'subscription_user';
+    public $table = 'user_subuser';
 
     protected $fillable = [
-        'subscription_id',
         'user_id',
-    ];
-
-    protected $hidden = [
-        'id',
-        'pivot'
+        'subuser_id',
     ];
 }

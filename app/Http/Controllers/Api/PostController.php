@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\PostUser;
+use App\Models\UserSubuser;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -14,14 +15,22 @@ class PostController extends Controller
 {
     public function GetAllMyPosts()
     {
-        //Посты, где автор MyUser
-        $meAsAuthorPosts = User::with('postsWithSubscription')->where('subscribed_user_id', 1);
-        //Посты, на которые подписан MyUser
-        /* $mySubscribedPosts = User::with('postWithSubscription')->with(); */
-        //Посты на которых отмечен MyUser
-        $meAsMarkedUser = User::with('markedOnPosts')->where('user_id', 1)->get();
-
-        return response()->json($meAsAuthorPosts);
+        //Посты,где автор MyUser
+        $postsWhereAuthor = User::find(1)
+            ->posts()
+            ->with('user')
+            ->get();
+        //Пост, из подписок MyUser
+        $postsWhereSubscriptions = User::find(1)
+            ->subscriptions()
+            ->with('posts')
+            ->get();
+        //Посты, где отмечен MyUser
+        $postsWhereMarked = User::find(1)
+            ->markedOnPosts()
+            ->with('user')
+            ->get();
+        return response()->json($postsWhereMarked);
     }
 
     public function CreateMyPost(Request $request)
@@ -67,8 +76,6 @@ class PostController extends Controller
             ->markedOnPosts()
             ->with('markedUsers', 'user')
             ->get();
-        /* $firstCollection = new Collection($postsWithAuthor);
-        $secondCollection = new Collection($markedOnPosts); */
 
         //Объединяем
         $merged = $postsWithAuthor->merge($markedOnPosts);
@@ -76,11 +83,17 @@ class PostController extends Controller
         return response()->json($merged);
     }
     //Done
-    public function SubscribeOnPost($id)
+    public function SubscribeOnUser($login)
     {
-        $post = Post::find($id);
-        $post->subscribed_user_id = 1;
-        $post->save();
+        $user = User::where('login', $login)->first();
+
+        $subscribe = new UserSubuser(
+            array(
+                'subuser_id' => 1,
+                'user_id' => $user->id
+            )
+        );
+        $subscribe->save();
     }
 
     //Done

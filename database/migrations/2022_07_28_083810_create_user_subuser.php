@@ -9,15 +9,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('subscription_user', function (Blueprint $table) {
+        Schema::create('user_subuser', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'subscription_id');
             $table->foreignIdFor(User::class, 'user_id');
+            $table->foreignIdFor(User::class, 'subuser_id');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('subscription_user');
+        Schema::dropIfExists('user_subuser');
     }
 };
