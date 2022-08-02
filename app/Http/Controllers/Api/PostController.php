@@ -14,24 +14,28 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    //TODO
     public function GetAllMyPosts()
     {
         //Посты,где автор MyUser
         $postsWhereAuthor = User::find(1)
             ->posts()
             ->with('user')
-            ->get();
+            ->get()
+            ->sortByDesc('created_at');
         //Пост, из подписок MyUser
         $postsWhereSubscriptions = User::find(1)
             ->subscriptions()
             ->with('posts')
-            ->get();
+            ->get()
+            ->sortByDesc('created_at');
         //Посты, где отмечен MyUser
         $postsWhereMarked = User::find(1)
             ->markedOnPosts()
             ->with('user')
-            ->get();
-        /* $all = $postsWhereAuthor->merge($postsWhereSubscriptions)->merge($postsWhereMarked); */
+            ->get()
+            ->sortByDesc('created_at');
+        /* $all = $postsWhereAuthor->merge($postsWhereSubscriptions)->merge($postsWhereMarked)->sortByDesc('created_at'); */
 
         return response()->json($postsWhereAuthor);
     }
@@ -44,13 +48,13 @@ class PostController extends Controller
         $text = $request->get('body');
 
         //Записываю пост автора MyUser в базу
-        $newPost = new Post(
+        $createdPost = new Post(
             array(
                 'body' => $text,
                 'user_id' => 1,
             )
         );
-        $newPost->save();
+        $createdPost->save();
         /*
         Получаю массивы отмеченных пользователей
         и отмеченных хештегов из тела поста.
@@ -60,7 +64,7 @@ class PostController extends Controller
         $usersArray = $filter->UserFilter();
         /*
         Проверяем каждый тег на наличие в базе,
-        если тега нет, то добавляем
+        если тега нет, то добавляем его
         и создаём связь с созданным постом.
         Если тег есть то создаём связь с созданным постом.
         */
@@ -75,14 +79,14 @@ class PostController extends Controller
                 $hashtagPostRelation = new HashtagPost();
                 $hashtagPostRelation->fill([
                     'hashtag_id' => $newHashtag->id,
-                    'post_id' => $newPost->id
+                    'post_id' => $createdPost->id
                 ]);
                 $hashtagPostRelation->save();
             } else {
                 $hashtagPostRelation = new HashtagPost();
                 $hashtagPostRelation->fill([
                     'hashtag_id' => $tag->id,
-                    'post_id' => $newPost->id
+                    'post_id' => $createdPost->id
                 ]);
 
                 $hashtagPostRelation->save();
@@ -101,7 +105,7 @@ class PostController extends Controller
             if (!$userFoundFromDb == null) {
                 $postUserRelation = new PostUser();
                 $postUserRelation->fill([
-                    'post_id' => $newPost->id,
+                    'post_id' => $createdPost->id,
                     'user_id' => $userFoundFromDb->id
                 ]);
 
@@ -109,9 +113,6 @@ class PostController extends Controller
             }
         }
     }
-
-
-
 
     //Done
     public function GetPostsByUser($login)
@@ -133,6 +134,7 @@ class PostController extends Controller
 
         return response()->json($merged);
     }
+
     //Done
     public function SubscribeOnUser($login)
     {

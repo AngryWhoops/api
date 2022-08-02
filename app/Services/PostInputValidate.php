@@ -3,7 +3,7 @@
 namespace App\Services;
 /*
 PostInputValidate класс позволяет извлечь
-различные данные из входящего текста.
+различные данные из входящего текста (поста).
 */
 
 class PostInputValidate
