@@ -6,6 +6,8 @@ PostInputValidate класс позволяет извлечь
 различные данные из входящего текста (поста).
 */
 
+
+//Гуглить правила именования классов, laravel wherein, логирование запросов, php microtime, laravel репозиторий паттерн
 class PostInputValidate
 {
     private string $inputText;

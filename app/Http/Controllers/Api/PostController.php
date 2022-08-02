@@ -11,12 +11,19 @@ use App\Models\UserSubuser;
 use App\Models\User;
 use App\Services\PostInputValidate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
     //TODO
     public function GetAllMyPosts()
     {
+        $subscriptinIds = User::find(1)
+            ->subscriptions()->pluck('id')->toArray();
+
+        $posts = Post::whereHas('markedUsers', function ($query) {
+            $query->where('user_id', 1);
+        })->orWhereIn('user_id', $subscriptinIds)->orWhere('user_id', 1);
         //Посты,где автор MyUser
         $postsWhereAuthor = User::find(1)
             ->posts()
@@ -37,7 +44,14 @@ class PostController extends Controller
             ->sortByDesc('created_at');
         /* $all = $postsWhereAuthor->merge($postsWhereSubscriptions)->merge($postsWhereMarked)->sortByDesc('created_at'); */
 
-        return response()->json($postsWhereAuthor);
+        $posts = DB::table('users')
+            ->join('posts', 'users.id', '=', 'posts.user_id')
+            ->join('post_user', 'users.id', '=', 'post_user.user_id')
+            ->select('users.*', 'posts.body', 'post_user.post_id')
+            ->where('users.id', 2, 'and', 'post_user.id', '=', 'posts.user_id')
+            ->get();
+
+        return response()->json($posts);
     }
 
 
@@ -69,7 +83,7 @@ class PostController extends Controller
         Если тег есть то создаём связь с созданным постом.
         */
         foreach ($tagsArray as $hashtag) {
-            $tag = Hashtag::where('name', $hashtag)->first();
+            $tag = Hashtag::where('name', $hashtag)->first(); // переделать
 
             if ($tag === null) {
                 $newHashtag = new Hashtag();
