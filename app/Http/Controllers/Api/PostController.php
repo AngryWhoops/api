@@ -9,9 +9,8 @@ use App\Models\Post;
 use App\Models\PostUser;
 use App\Models\UserSubuser;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use App\Services\PostInputValidate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -34,46 +33,81 @@ class PostController extends Controller
             ->get();
         /* $all = $postsWhereAuthor->merge($postsWhereSubscriptions)->merge($postsWhereMarked); */
 
-
         return response()->json($postsWhereAuthor);
     }
 
 
 
-
+    //Done
     public function CreateMyPost(Request $request)
     {
         $text = $request->get('body');
-        $arrText = explode(" ", $text);
-        $tagsArray = [];
-        $marksArray = [];
 
-
-        foreach ($arrText as $element) {
-            if ($element[0] == '#') {
-                array_push($tagsArray, $element);
-            } elseif ($element[0] == '@') {
-                array_push($marksArray, $element);
-            }
-        };
-
-        //Записываю пост
+        //Записываю пост автора MyUser в базу
         $newPost = new Post(
             array(
-                'body' => $request->get('body'),
+                'body' => $text,
                 'user_id' => 1,
             )
         );
         $newPost->save();
+        /*
+        Получаю массивы отмеченных пользователей
+        и отмеченных хештегов из тела поста.
+        */
+        $filter = new PostInputValidate($text);
+        $tagsArray = $filter->TagFilter();
+        $usersArray = $filter->UserFilter();
+        /*
+        Проверяем каждый тег на наличие в базе,
+        если тега нет, то добавляем
+        и создаём связь с созданным постом.
+        Если тег есть то создаём связь с созданным постом.
+        */
+        foreach ($tagsArray as $hashtag) {
+            $tag = Hashtag::where('name', $hashtag)->first();
 
-        //Обреж массив с пользователям от собак
-        //Записываю отношение поста с юзером (отметка юзера в посте)
-        foreach ($marksArray as $user) {
-            $someUser = User::where('login', $user)->first();
+            if ($tag === null) {
+                $newHashtag = new Hashtag();
+                $newHashtag->name = $hashtag;
+                $newHashtag->save();
+
+                $hashtagPostRelation = new HashtagPost();
+                $hashtagPostRelation->fill([
+                    'hashtag_id' => $newHashtag->id,
+                    'post_id' => $newPost->id
+                ]);
+                $hashtagPostRelation->save();
+            } else {
+                $hashtagPostRelation = new HashtagPost();
+                $hashtagPostRelation->fill([
+                    'hashtag_id' => $tag->id,
+                    'post_id' => $newPost->id
+                ]);
+
+                $hashtagPostRelation->save();
+            }
         }
 
+        /*
+        Проверяем каждого юзера на наличие в базе,
+        если юзера нет, то в базу НЕ заносим (видимо будем
+        считать это просто текстом).Если юзер есть
+        то создаём связь с созданным постом.
+        */
+        foreach ($usersArray as $user) {
+            $userFoundFromDb = User::where('login', $user)->first();
 
-        response()->json();
+            if (!$userFoundFromDb == null) {
+                $postUserRelation = new PostUser();
+                $postUserRelation->fill([
+                    'post_id' => $newPost->id,
+                    'user_id' => $userFoundFromDb->id
+                ]);
+
+                $postUserRelation->save();
+            }
+        }
     }
 
 
