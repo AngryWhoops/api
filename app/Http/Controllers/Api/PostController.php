@@ -9,7 +9,7 @@ use App\Models\Post;
 use App\Models\PostUser;
 use App\Models\UserSubuser;
 use App\Models\User;
-use App\Services\PostInputValidate;
+use App\Services\FromArrayStringFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -73,9 +73,10 @@ class PostController extends Controller
         Получаю массивы отмеченных пользователей
         и отмеченных хештегов из тела поста.
         */
-        $filter = new PostInputValidate($text);
-        $tagsArray = $filter->TagFilter();
-        $usersArray = $filter->UserFilter();
+        $usersFinder = new FromArrayStringFinder($text, '@');
+        $hashtagsFinder = new FromArrayStringFinder($text, '#');
+        $tagsArray = $usersFinder->Find();
+        $usersArray = $hashtagsFinder->Find();
         /*
         Проверяем каждый тег на наличие в базе,
         если тега нет, то добавляем его
@@ -83,7 +84,7 @@ class PostController extends Controller
         Если тег есть то создаём связь с созданным постом.
         */
         foreach ($tagsArray as $hashtag) {
-            $tag = Hashtag::where('name', $hashtag)->first(); // переделать
+            $tag = Hashtag::where('name', $hashtag)->first(); // переделать на wherein
 
             if ($tag === null) {
                 $newHashtag = new Hashtag();
