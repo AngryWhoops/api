@@ -26,9 +26,10 @@ class Post extends Model
     ];
 
     protected $hidden = [
-        /* 'id',
+        'id',
         'user_id',
-        'pivot', */];
+        'pivot',
+    ];
 
     public function user(): BelongsTo
     {

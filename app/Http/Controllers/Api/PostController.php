@@ -29,8 +29,10 @@ class PostController extends Controller
             $q->where('user_id', 1);
         })->orWhereIn('user_id', $subscriptionsId)
             ->orWhere('user_id', 1)
+            ->with('user')
             ->get()
-            ->sortByDesc('created_at');
+            ->sortByDesc('created_at')
+            ->values();
 
 
         /* $posts = Post::whereHas('markedUsers', function ($query) {
