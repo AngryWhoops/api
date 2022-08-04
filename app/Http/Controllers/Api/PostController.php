@@ -22,41 +22,20 @@ class PostController extends Controller
     //TODO
     public function GetAllMyPosts()
     {
-        $subscriptinIds = User::find(1)
-            ->subscriptions()->pluck('id')->toArray();
+        //Все пользователи на которых подписаны ввиде ID
+        $subscriptionsId = User::find(1)->subscriptions()->pluck('subuser_id')->toArray();
 
-        $posts = Post::whereHas('markedUsers', function ($query) {
+        $posts = Post::whereHas('markedUsers', function ($q) {
+            $q->where('user_id', 1);
+        })->orWhereIn('user_id', $subscriptionsId)
+            ->orWhere('user_id', 1)
+            ->get()
+            ->sortByDesc('created_at');
+
+
+        /* $posts = Post::whereHas('markedUsers', function ($query) {
             $query->where('user_id', 1);
-        })->orWhereIn('user_id', $subscriptinIds)->orWhere('user_id', 1);
-
-
-
-        //Посты,где автор MyUser
-        $postsWhereAuthor = User::find(1)
-            ->posts()
-            ->with('user')
-            ->get()
-            ->sortByDesc('created_at');
-        //Пост, из подписок MyUser
-        $postsWhereSubscriptions = User::find(1)
-            ->subscriptions()
-            ->with('posts')
-            ->get()
-            ->sortByDesc('created_at');
-        //Посты, где отмечен MyUser
-        $postsWhereMarked = User::find(1)
-            ->markedOnPosts()
-            ->with('user')
-            ->get()
-            ->sortByDesc('created_at');
-        /* $all = $postsWhereAuthor->merge($postsWhereSubscriptions)->merge($postsWhereMarked)->sortByDesc('created_at'); */
-
-        $posts = DB::table('users')
-            ->join('posts', 'users.id', '=', 'posts.user_id')
-            ->join('post_user', 'users.id', '=', 'post_user.user_id')
-            ->select('users.*', 'posts.body', 'post_user.post_id')
-            ->where('users.id', 2, 'and', 'post_user.id', '=', 'posts.user_id')
-            ->get();
+        })->orWhereIn('user_id', $subscriptionsId)->orWhere('user_id', 1); */
 
         return response()->json($posts);
     }
