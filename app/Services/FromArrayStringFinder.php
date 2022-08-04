@@ -28,8 +28,7 @@ class FromArrayStringFinder
                 $clearedString = trim($element, $this->symbol);
                 array_push($this->result, $clearedString);
             }
-
-            return $this->result;
         };
+        return $this->result;
     }
 }

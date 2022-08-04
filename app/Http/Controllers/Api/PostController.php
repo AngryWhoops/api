@@ -12,6 +12,10 @@ use App\Models\User;
 use App\Services\FromArrayStringFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\MarkedHashtagPostRelationCreator;
+use App\Services\MarkedUserPostRelationCreator;
+
+//Гуглить правила именования классов, laravel wherein, логирование запросов, php microtime, laravel репозиторий паттерн
 
 class PostController extends Controller
 {
@@ -24,6 +28,9 @@ class PostController extends Controller
         $posts = Post::whereHas('markedUsers', function ($query) {
             $query->where('user_id', 1);
         })->orWhereIn('user_id', $subscriptinIds)->orWhere('user_id', 1);
+
+
+
         //Посты,где автор MyUser
         $postsWhereAuthor = User::find(1)
             ->posts()
@@ -54,8 +61,6 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
-
-
     //Done
     public function CreateMyPost(Request $request)
     {
@@ -74,59 +79,28 @@ class PostController extends Controller
         и отмеченных хештегов из тела поста.
         */
         $usersFinder = new FromArrayStringFinder($text, '@');
+        $usersArray = $usersFinder->Find();
+
         $hashtagsFinder = new FromArrayStringFinder($text, '#');
-        $tagsArray = $usersFinder->Find();
-        $usersArray = $hashtagsFinder->Find();
+        $tagsArray = $hashtagsFinder->Find();
         /*
         Проверяем каждый тег на наличие в базе,
         если тега нет, то добавляем его
         и создаём связь с созданным постом.
         Если тег есть то создаём связь с созданным постом.
         */
-        foreach ($tagsArray as $hashtag) {
-            $tag = Hashtag::where('name', $hashtag)->first(); // переделать на wherein
-
-            if ($tag === null) {
-                $newHashtag = new Hashtag();
-                $newHashtag->name = $hashtag;
-                $newHashtag->save();
-
-                $hashtagPostRelation = new HashtagPost();
-                $hashtagPostRelation->fill([
-                    'hashtag_id' => $newHashtag->id,
-                    'post_id' => $createdPost->id
-                ]);
-                $hashtagPostRelation->save();
-            } else {
-                $hashtagPostRelation = new HashtagPost();
-                $hashtagPostRelation->fill([
-                    'hashtag_id' => $tag->id,
-                    'post_id' => $createdPost->id
-                ]);
-
-                $hashtagPostRelation->save();
-            }
-        }
-
+        $createHashtagPostRelation = new MarkedHashtagPostRelationCreator($tagsArray, $createdPost->id);
+        $createHashtagPostRelation->FindAndCreate();
         /*
         Проверяем каждого юзера на наличие в базе,
         если юзера нет, то в базу НЕ заносим (видимо будем
         считать это просто текстом).Если юзер есть
         то создаём связь с созданным постом.
         */
-        foreach ($usersArray as $user) {
-            $userFoundFromDb = User::where('login', $user)->first();
+        $createMarkedUserPostRelationCreator = new MarkedUserPostRelationCreator($usersArray, $createdPost->id);
+        $createMarkedUserPostRelationCreator->FindAndCreate();
 
-            if (!$userFoundFromDb == null) {
-                $postUserRelation = new PostUser();
-                $postUserRelation->fill([
-                    'post_id' => $createdPost->id,
-                    'user_id' => $userFoundFromDb->id
-                ]);
-
-                $postUserRelation->save();
-            }
-        }
+        return response('Ok', 200);
     }
 
     //Done
