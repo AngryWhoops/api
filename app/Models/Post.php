@@ -13,6 +13,7 @@ class Post extends Model
 
     public $incrementing = true;
     public $timestamps = true;
+    public static $age = 10;
     protected $primaryKey = 'id';
     public $table = 'posts';
 
@@ -48,6 +49,8 @@ class Post extends Model
 
     public function subscribedUser(): BelongsTo
     {
+        self::$age;
+        static::$age;
         return $this->belongsTo(User::class, 'user_id');
     }
 }
