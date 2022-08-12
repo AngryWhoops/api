@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hashtag;
-use App\Models\HashtagPost;
 use App\Models\Post;
-use App\Models\PostUser;
 use App\Models\UserSubuser;
 use App\Models\User;
 use App\Services\FromArrayStringFinder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Services\MarkedHashtagPostRelationCreator;
 use App\Services\MarkedUserPostRelationCreator;
 
