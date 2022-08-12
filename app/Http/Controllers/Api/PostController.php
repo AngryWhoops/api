@@ -56,11 +56,9 @@ class PostController extends Controller
         Получаю массивы отмеченных пользователей
         и отмеченных хештегов из тела поста.
         */
-        $usersFinder = new FromArrayStringFinder($text, '@');
-        $usersArray = $usersFinder->Find();
-
-        $hashtagsFinder = new FromArrayStringFinder($text, '#');
-        $tagsArray = $hashtagsFinder->Find();
+        $finder = new FromArrayStringFinder();
+        $usersArray = $finder->Find($text, '@');
+        $tagsArray = $finder->Find($text, '#');
         /*
         Проверяем каждый тег на наличие в базе,
         если тега нет, то добавляем его

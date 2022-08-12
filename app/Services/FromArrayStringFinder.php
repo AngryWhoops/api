@@ -9,20 +9,24 @@ class FromArrayStringFinder
     private string $symbol = '';
     private $result = [];
 
-    public function __construct(string $inputArray, string $symbol)
+    /* public function __construct(string $inputArray, string $symbol)
     {
         $this->inputText = $inputArray;
         $this->symbol = $symbol;
         $this->arrayStrings = explode(" ", $this->inputText);
-    }
+    } */
 
     /*
     Find() позволяет извлечь
     строки из входящего текста, которые начинаются
     с символа, переданного в обьект класса.
     */
-    public function Find()
+    public function Find(string $inputArray, string $symbol)
     {
+        $this->inputText = $inputArray;
+        $this->symbol = $symbol;
+        $this->arrayStrings = explode(" ", $this->inputText);
+
         foreach ($this->arrayStrings as $element) {
             if ($element[0] == $this->symbol) {
                 $clearedString = trim($element, $this->symbol);
