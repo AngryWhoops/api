@@ -16,14 +16,17 @@ class MarkedHashtagPostRelationCreator
     private $hashtagsArray;
     private int $id;
 
-    public function __construct(array $inputArray, int $postId)
+    /* public function __construct(array $inputArray, int $postId)
     {
         $this->hashtagsArray = $inputArray;
         $this->id = $postId;
-    }
+    } */
 
-    public function FindAndCreate()
+    public function FindAndCreate(array $inputArray, int $postId)
     {
+        $this->hashtagsArray = $inputArray;
+        $this->id = $postId;
+
         foreach ($this->hashtagsArray as $tag) {
             $foundedHashtag = Hashtag::where('name', $tag)->first();
 

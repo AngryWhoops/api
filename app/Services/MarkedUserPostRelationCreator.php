@@ -17,14 +17,17 @@ class MarkedUserPostRelationCreator
     private array $usersArray;
     private $id;
 
-    public function __construct(array $inputArray, int $postId)
+    /* public function __construct(array $inputArray, int $postId)
     {
         $this->usersArray = $inputArray;
         $this->id = $postId;
-    }
+    } */
 
-    public function FindAndCreate()
+    public function FindAndCreate(array $inputArray, int $postId)
     {
+        $this->usersArray = $inputArray;
+        $this->id = $postId;
+
         $usersFoundFromDb = User::whereIn('login', $this->usersArray)->get();
         foreach ($usersFoundFromDb as $user) {
 

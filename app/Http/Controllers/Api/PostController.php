@@ -52,29 +52,16 @@ class PostController extends Controller
             )
         );
         $createdPost->save();
-        /*
-        Получаю массивы отмеченных пользователей
-        и отмеченных хештегов из тела поста.
-        */
+
         $finder = new FromArrayStringFinder();
         $usersArray = $finder->Find($text, '@');
         $tagsArray = $finder->Find($text, '#');
-        /*
-        Проверяем каждый тег на наличие в базе,
-        если тега нет, то добавляем его
-        и создаём связь с созданным постом.
-        Если тег есть то создаём связь с созданным постом.
-        */
-        $createHashtagPostRelation = new MarkedHashtagPostRelationCreator($tagsArray, $createdPost->id);
-        $createHashtagPostRelation->FindAndCreate();
-        /*
-        Проверяем каждого юзера на наличие в базе,
-        если юзера нет, то в базу НЕ заносим (видимо будем
-        считать это просто текстом).Если юзер есть
-        то создаём связь с созданным постом.
-        */
-        $createMarkedUserPostRelationCreator = new MarkedUserPostRelationCreator($usersArray, $createdPost->id);
-        $createMarkedUserPostRelationCreator->FindAndCreate();
+
+        $creator = new MarkedHashtagPostRelationCreator();
+        $creator->FindAndCreate($tagsArray, $createdPost->id);
+
+        $createMarkedUserPostRelationCreator = new MarkedUserPostRelationCreator();
+        $createMarkedUserPostRelationCreator->FindAndCreate($usersArray, $createdPost->id);
 
         return response('Ok', 200);
     }
